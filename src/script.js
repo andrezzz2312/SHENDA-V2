@@ -158,8 +158,21 @@ btnShow.addEventListener('click', () => {
 	showSpecs()
 })
 let btnShowPressed = false
-
+let numberMemory = 100
 point.forEach((e) => {
+	// movimiento de camara al dar click al punto
+
+	e.addEventListener('click', () => {
+		point.forEach((element, i) => {
+			if (point[i] === e) {
+				console.log(points[i].position)
+			}
+		})
+		console.log(e)
+	})
+
+	// hacer que la caja de texto siempre este por encima
+
 	e.addEventListener('mouseover', () => {
 		point.forEach((i) => {
 			i.style.zIndex = 0
@@ -309,6 +322,14 @@ const points = [
 	{
 		position: new THREE.Vector3(0, -0.1, 2.1),
 		element: document.querySelector('.point-14'),
+	},
+	{
+		position: new THREE.Vector3(1.9, 0.6, 2.15),
+		element: document.querySelector('.point-15'),
+	},
+	{
+		position: new THREE.Vector3(-1.5, 1.4, -0.5),
+		element: document.querySelector('.point-16'),
 	},
 ]
 
