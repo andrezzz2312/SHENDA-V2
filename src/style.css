@@ -1,0 +1,220 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	overflow: hidden;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
+:root {
+	--border-width: 5px;
+	--burgundy-color: #a73439;
+	--gray-color: #9a999e;
+	--font-size: 1.7rem;
+	--font-weight: 600;
+	--padding: 4px 30px;
+	--width: 260px;
+	--vartest: 20px;
+}
+
+.webgl {
+	position: fixed;
+	top: 0;
+	left: 0;
+	outline: none;
+}
+.ui {
+}
+.btnSp {
+	position: absolute;
+	right: 5%;
+	top: 5%;
+	color: #ffffff;
+	width: 10rem;
+	background: rgba(167, 52, 57, 1);
+	/* border: white solid 1px; */
+	padding: 1rem;
+	z-index: 1;
+	border-radius: 5rem;
+	border: none;
+	cursor: pointer;
+	transition: box-shadow 400ms ease-in-out,
+		transform 200ms cubic-bezier(0.2, 0, 0.7, 1);
+}
+.btnSpText {
+	font-family: 'Roboto', sans-serif;
+	font-weight: bold;
+}
+
+.btnSp:hover {
+	box-shadow: 0 0 1px 15px rgba(167, 52, 57, 0.4),
+		0 0 1px 30px rgba(167, 52, 57, 0.1), 0 0 1px 45px rgba(167, 52, 57, 0.1);
+}
+/* loading bar */
+.progress-bar-container {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+	transition: all 1s ease;
+}
+#wrImg {
+	margin-top: -1rem;
+}
+#progress-bar {
+	width: 40%;
+	margin-top: 1%;
+	height: 2%;
+	accent-color: #a73439;
+	background-color: white;
+	border: none;
+	border-radius: 1rem;
+	transition: all 3s ease-in-out;
+}
+#progress-bar::-webkit-progress-bar {
+	/* background-color: #48aabb !important; */
+	border-radius: 1rem;
+	transition: all 3s ease-in-out;
+}
+#progress-bar::-webkit-progress-value {
+	background-color: #a73439 !important;
+	border-radius: 1rem;
+	transition: all 3s ease-in-out;
+}
+#progress-bar::-moz-progress-bar {
+	background-color: #a73439 !important;
+	border-radius: 1rem;
+	transition: all 3s ease-in-out;
+}
+.vanish {
+	opacity: 0;
+}
+/* .loading-bar {
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	height: 2px;
+	background: #ffffff;
+	transform: scaleX(0.3);
+	transform-origin: top left;
+	transition: transform 0.5s;
+}
+
+.loading-bar.ended {
+	transform: scaleX(0);
+	transform-origin: 100% 0;
+	transition: transform 1.5s ease-in-out;
+} */
+
+.point {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+
+.point .label {
+	position: absolute;
+	top: -20px;
+	left: -20px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background: hsl(252, 3%, 61%);
+	border: 1px solid #ffffff77;
+	color: #ffffff;
+	/* font-family: Helvetica, sans-serif; */
+	text-align: center;
+	line-height: 40px;
+	font-weight: 300;
+	font-size: 14px;
+	cursor: help;
+
+	cursor: help;
+	/* transform: scale(0, 0); */
+	opacity: 0.2;
+	transition: opacity 0.3s;
+}
+.inner {
+	aspect-ratio: 1/1;
+	background: hsl(252, 3%, 61%);
+	border-radius: 50%;
+	width: 40%;
+	transform: translate(17%, 17%);
+	border: 5px solid var(--burgundy-color);
+	-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+}
+.inner:hover {
+	border: 5px solid #fff;
+	box-shadow: 0 0 2px var(--burgundy-color), 0 0 4px var(--burgundy-color),
+		0 0 7px var(--burgundy-color), 0 0 12px var(--burgundy-color);
+	filter: blur(1px);
+}
+.point .text {
+	/* display: flex;
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column; */
+	position: absolute;
+	/* top: -2rem; */
+	top: 0;
+	left: 0;
+	transform: translate(5%, -48%);
+	/* left: 30px; */
+	width: 400px;
+	padding: 20px;
+	border-radius: 4px;
+	text-align: center;
+	/* background: #00000077; */
+	background: rgb(167, 52, 57);
+	background: radial-gradient(
+		circle,
+		rgba(167, 52, 57, 0.6951155462184874) 0%,
+		rgba(115, 36, 39, 1) 100%
+	);
+	/* border: 1px solid #ffffff77; */
+	color: #ffffff;
+	line-height: 1.1rem;
+	/* font-family: Helvetica, sans-serif; */
+	font-weight: 300;
+	font-size: 14px;
+	opacity: 0;
+	transition: opacity 0.3s;
+	pointer-events: none;
+}
+h3 {
+	margin-bottom: 0.5rem;
+}
+p {
+	text-align: justify;
+}
+.point:hover .text {
+	opacity: 1;
+}
+
+.point.visible .label {
+	/* transform: scale(1, 1); */
+	opacity: 1;
+	pointer-events: all;
+}
+/* .visible {
+	opacity: 1;
+	pointer-events: all;
+} */
+
