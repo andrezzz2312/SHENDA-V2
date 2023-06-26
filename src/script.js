@@ -453,7 +453,7 @@ window.addEventListener('resize', () => {
 
 		// Update renderer
 		renderer.setSize(sizes.width, sizes.height)
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1))
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 		console.log(Math.min(window.devicePixelRatio, 1))
 	}
 })
@@ -494,7 +494,7 @@ renderer.toneMappingExposure = 3
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1))
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 console.log(Math.min(window.devicePixelRatio, 1))
 
 /**
