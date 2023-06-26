@@ -439,17 +439,23 @@ const sizes = {
 console.log(sizes)
 
 window.addEventListener('resize', () => {
-	// Update sizes
+	console.log(sizes)
 	sizes.width = window.innerWidth
 	sizes.height = window.innerHeight
+	if (sizes.width > sizes.height) {
+		// Update sizes
+		sizes.width = window.innerWidth
+		sizes.height = window.innerHeight
 
-	// Update camera
-	camera.aspect = sizes.width / sizes.height
-	camera.updateProjectionMatrix()
+		// Update camera
+		camera.aspect = sizes.width / sizes.height
+		camera.updateProjectionMatrix()
 
-	// Update renderer
-	renderer.setSize(sizes.width, sizes.height)
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+		// Update renderer
+		renderer.setSize(sizes.width, sizes.height)
+		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1))
+		console.log(Math.min(window.devicePixelRatio, 1))
+	}
 })
 
 /**
@@ -488,7 +494,8 @@ renderer.toneMappingExposure = 3
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1))
+console.log(Math.min(window.devicePixelRatio, 1))
 
 /**
  * Animate
@@ -496,6 +503,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const tick = () => {
 	// Update controls
 	controls.update()
+	console.log(camera.aspect)
 
 	// Update points only when the scene is ready
 	if (sceneReady) {
@@ -566,4 +574,3 @@ const tick = () => {
 }
 
 tick()
-
