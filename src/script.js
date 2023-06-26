@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import TWEEN from '@tweenjs/tween.js'
 import { gsap } from 'gsap'
 
 /**
@@ -149,6 +150,8 @@ let clock = new THREE.Clock()
  * HTML
  */
 const btnShow = document.querySelector('.btnSp')
+// const btnTest = document.querySelector('.test')
+const text = document.querySelectorAll('.text')
 const point = document.querySelectorAll('.point')
 const labelPoint = document.querySelectorAll('.label')
 const btnShowText = document.querySelector('.btnSpText')
@@ -159,16 +162,93 @@ btnShow.addEventListener('click', () => {
 })
 let btnShowPressed = false
 let numberMemory = 100
-point.forEach((e) => {
+
+// btnTest.addEventListener('click', () => {})
+point.forEach((e, i) => {
 	// movimiento de camara al dar click al punto
 
 	e.addEventListener('click', () => {
-		point.forEach((element, i) => {
-			if (point[i] === e) {
-				console.log(points[i].position)
+		if (point[i] === e) {
+			console.log(e.children)
+			text.forEach((e) => {
+				e.style.opacity = 0
+			})
+			// controls.enabled = false
+			if (numberMemory !== i) {
+				new TWEEN.Tween(controls.target)
+					.to(
+						new THREE.Vector3(
+							points[i].position.x,
+							points[i].position.y,
+							points[i].position.z
+						),
+						1000
+					)
+					.easing(TWEEN.Easing.Quadratic.InOut)
+					.onComplete(() => {
+						new TWEEN.Tween(camera.position)
+							.to(
+								{
+									x:
+										points[i].position.x < 0
+											? points[i].position.x - 4
+											: points[i].position.x + 4,
+									y: points[i].position.y + 2,
+									z:
+										points[i].position.z < 0
+											? points[i].position.z - 4
+											: points[i].position.z + 4,
+								},
+								1000
+							)
+							.easing(TWEEN.Easing.Quadratic.InOut)
+							.onComplete(() => {
+								var zoomDistance = Number(4),
+									currDistance = camera.position.length(),
+									factor = zoomDistance / currDistance
+
+								new TWEEN.Tween(camera.position)
+									.to(
+										{
+											x: camera.position.x * factor,
+											y: camera.position.y * factor,
+											z: camera.position.z * factor,
+										},
+										1000
+									)
+									.easing(TWEEN.Easing.Quadratic.InOut)
+									.onComplete(() => {
+										if (numberMemory !== i) {
+											e.children[1].style.opacity = 1
+										}
+
+										numberMemory = i
+									})
+									.start()
+							})
+							.start()
+					})
+					.start()
+			} else {
+				new TWEEN.Tween(controls.target)
+					.to(new THREE.Vector3(0, 0, 0), 1000)
+					.easing(TWEEN.Easing.Quadratic.InOut)
+					.onComplete(() => {
+						new TWEEN.Tween(camera.position)
+							.to(
+								{
+									x: 5,
+									y: 1,
+									z: -5,
+								},
+								1000
+							)
+							.easing(TWEEN.Easing.Quadratic.InOut)
+							.start()
+					})
+					.start()
 			}
-		})
-		console.log(e)
+		}
 	})
 
 	// hacer que la caja de texto siempre este por encima
@@ -206,7 +286,6 @@ function showParts() {
 			btnShow.style.pointerEvents = 'all'
 		})
 	} else {
-		console.log('check')
 		mixer.stopAllAction()
 		shenda.animations.forEach((animation) => {
 			const action = mixer.clipAction(animation)
@@ -236,25 +315,31 @@ function showParts() {
 }
 function showSpecs() {
 	if (specsShown === false) {
-		// measure()
-		// point.forEach((element) => {
-		// 	element.style.opacity = '0.3'
-		// })
-
 		setTimeout(() => {
 			specsShown = true
 		}, 1000)
 	} else {
-		// moveAndLookAt(
-		// 	camera,
-		// 	new THREE.Vector3(-15.75, 3.44, 34.4),
-		// 	new THREE.Vector3(1.4, 3, -2.8),
-		// 	{ duration: 1500 }
-		// )
-		labelPoint.forEach((e) => {
-			console.log(e)
+		new TWEEN.Tween(controls.target)
+			.to(new THREE.Vector3(0, 0, 0), 1000)
+			.easing(TWEEN.Easing.Quadratic.InOut)
+			.onComplete(() => {
+				new TWEEN.Tween(camera.position)
+					.to(
+						{
+							x: 5,
+							y: 1,
+							z: -5,
+						},
+						1000
+					)
+					.easing(TWEEN.Easing.Quadratic.InOut)
+					.start()
+			})
+			.start()
+		numberMemory = 100
+		text.forEach((e) => {
+			e.style.opacity = 0
 		})
-		// obj_measure.visible = false
 		specsShown = false
 	}
 }
@@ -382,6 +467,10 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.enablePan = false
+controls.enableZoom = true
+controls.minDistance = 2
+controls.maxDistance = 7
 
 /**
  * Renderer
@@ -468,7 +557,7 @@ const tick = () => {
 
 	let mixerUpdateDelta = clock.getDelta()
 	// controls.update()
-	// TWEEN.update()
+	TWEEN.update()
 
 	if (mixer) {
 		mixer.update(mixerUpdateDelta)
