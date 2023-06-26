@@ -521,16 +521,6 @@ console.log(Math.min(window.devicePixelRatio, 1))
 const tick = () => {
 	// Update controls
 	controls.update()
-	point.forEach((element) => {
-		rect = element.getBoundingClientRect()
-		if (rect.top > sizes.height) {
-			element.style.display = 'none'
-		} else {
-			element.style.display = 'block'
-		}
-	})
-	var rect = point[2].getBoundingClientRect()
-	console.log(rect.top, rect.right, rect.bottom, rect.left)
 
 	// Update points only when the scene is ready
 	if (sceneReady) {
