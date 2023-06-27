@@ -108,12 +108,12 @@ const updateAllMaterials = () => {
  * Environment map
  */
 const environmentMap = cubeTextureLoader.load([
-	'/textures/environmentMaps/0/px.jpg',
-	'/textures/environmentMaps/0/nx.jpg',
-	'/textures/environmentMaps/0/py.jpg',
-	'/textures/environmentMaps/0/ny.jpg',
-	'/textures/environmentMaps/0/pz.jpg',
-	'/textures/environmentMaps/0/nz.jpg',
+	'/textures/environmentMaps/4/px.png',
+	'/textures/environmentMaps/4/nx.png',
+	'/textures/environmentMaps/4/py.png',
+	'/textures/environmentMaps/4/ny.png',
+	'/textures/environmentMaps/4/pz.png',
+	'/textures/environmentMaps/4/nz.png',
 ])
 
 environmentMap.encoding = THREE.sRGBEncoding
@@ -155,6 +155,7 @@ const text = document.querySelectorAll('.text')
 const point = document.querySelectorAll('.point')
 const labelPoint = document.querySelectorAll('.label')
 const btnShowText = document.querySelector('.btnSpText')
+const placeImgContainer = document.querySelector('.placeImgContainer')
 let specsShown = false
 btnShow.addEventListener('click', () => {
 	showParts()
@@ -162,6 +163,9 @@ btnShow.addEventListener('click', () => {
 })
 let btnShowPressed = false
 let numberMemory = 100
+let isMobile = false
+const warningText = document.querySelector('.warningText')
+const warning = document.querySelector('.warning')
 window.mobileCheck = function () {
 	let check = false
 	let mobile = (function (a) {
@@ -173,12 +177,25 @@ window.mobileCheck = function () {
 				a.substr(0, 4)
 			)
 		)
-			check = true
+			isMobile = true
 	})(navigator.userAgent || navigator.vendor || window.opera)
 	console.log(check)
 }
 
 mobileCheck()
+
+window.addEventListener('DOMContentLoaded', function () {
+	if (window.matchMedia('(max-width: 420px)').matches) {
+		if (window.matchMedia('(orientation: portrait)').matches) {
+			warningText.innerHTML =
+				' Use the device in landscape mode in order to properly use this website'
+			warning.style.opacity = '1'
+			warning.style.zIndex = '300'
+			placeImgContainer.style.opacity = 1
+			btnShow.style.opacity = 0
+		}
+	}
+})
 // btnTest.addEventListener('click', () => {})
 point.forEach((e, i) => {
 	// movimiento de camara al dar click al punto
@@ -460,6 +477,24 @@ window.addEventListener('resize', () => {
 	console.log(sizes)
 	sizes.width = window.innerWidth
 	sizes.height = window.innerHeight
+	if (window.matchMedia('(max-width: 420px)').matches) {
+		if (window.matchMedia('(orientation: portrait)').matches) {
+			warningText.innerHTML =
+				' Use the device in landscape mode in order to properly use this website'
+			warning.style.opacity = '1'
+			warning.style.zIndex = '300'
+			placeImgContainer.style.opacity = 1
+			btnShow.style.opacity = 0
+		}
+	} else {
+		if (window.matchMedia('(orientation: landscape)').matches) {
+			warning.style.opacity = '0'
+			warning.style.zIndex = '-100'
+			placeImgContainer.style.opacity = 0
+			btnShow.style.opacity = 1
+			window.scrollTo(0, document.body.scrollHeight)
+		}
+	}
 	if (sizes.width > sizes.height) {
 		// Update sizes
 		sizes.width = window.innerWidth
