@@ -1,11 +1,12 @@
 * {
 	margin: 0;
 	padding: 0;
+	font-family: 'Roboto', sans-serif;
 }
 
 html,
 body {
-	font-family: 'Roboto', sans-serif;
+	/* font-family: 'Roboto', sans-serif; */
 	overflow: hidden;
 	position: relative;
 	font-weight: 300;
@@ -59,11 +60,13 @@ body {
 	transition: box-shadow 400ms ease-in-out,
 		transform 200ms cubic-bezier(0.2, 0, 0.7, 1);
 	pointer-events: all;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .btnSpText {
 	font-family: 'Roboto', sans-serif;
 	font-weight: bold;
+	font-size: calc(8px + (17 - 8) * ((100vw - 320px) / (1440 - 320)));
 }
 
 .btnSp:hover {
@@ -193,7 +196,8 @@ body {
 	left: 0;
 	transform: translate(10%, -48%);
 	/* left: 30px; */
-	width: 15rem;
+	width: 12rem;
+	width: 12rem;
 	padding: 20px;
 	border-radius: 4px;
 	text-align: center;
@@ -272,4 +276,62 @@ p {
 .warnIcon {
 	font-size: 3rem;
 	color: #a73439;
+}
+
+.instru {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 100;
+	opacity: 1;
+}
+.instruModal {
+	position: absolute;
+	right: 5%;
+	bottom: 5%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	padding: 1rem;
+	border-radius: 2rem;
+	text-align: center;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	transform: translateX(300%);
+	transition: all 1s ease-in-out;
+}
+.instruText {
+	font-size: calc(8px + (17 - 8) * ((100vw - 320px) / (1440 - 320)));
+}
+
+.instruIcon {
+	font-size: 1.5rem;
+	color: #a73439;
+}
+
+.btnInstru {
+	color: #ffffff;
+	width: 8rem;
+	background: rgba(167, 52, 57, 1);
+	/* border: white solid 1px; */
+	padding: 0.7rem;
+	z-index: 1;
+	border-radius: 5rem;
+	border: none;
+	cursor: pointer;
+	transition: box-shadow 400ms ease-in-out,
+		transform 200ms cubic-bezier(0.2, 0, 0.7, 1);
+	pointer-events: all;
+	font-weight: bold;
+	font-size: calc(8px + (20 - 8) * ((100vw - 320px) / (1440 - 320)));
+}
+
+.btnInstru:hover {
+	box-shadow: 0 0 1px 15px rgba(167, 52, 57, 0.4),
+		0 0 1px 30px rgba(167, 52, 57, 0.1);
 }

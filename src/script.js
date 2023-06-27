@@ -26,6 +26,34 @@ const loadingManager = new THREE.LoadingManager(
 			// Update loadingBarElement
 			progressBarContainer.classList.add('vanish')
 			progressBarContainer.style.pointerEvents = 'none'
+			setTimeout(() => {
+				if (window.matchMedia('(max-width: 420px)').matches) {
+					if (window.matchMedia('(orientation: portrait)').matches) {
+						warningText.innerHTML =
+							' Use the device in landscape mode in order to properly use this website'
+						warning.style.opacity = '1'
+						warning.style.zIndex = '300'
+						placeImgContainer.style.opacity = 1
+						btnShow.style.opacity = 0
+						instru.style.opacity = 0
+						instruModal.style.transform = 'translateX(180%)'
+					} else {
+						instruText.innerHTML = `You can know more about the parts<br>
+						of the <b> SHENDA&#174;</b>  machine by
+						clicking <br>the <b>SHOW PARTS</b> buttons`
+						instru.style.opacity = '1'
+						instru.style.zIndex = '300'
+						instruModal.style.transform = 'translateX(0%)'
+					}
+				} else {
+					instruText.innerHTML = `You can know more about the parts<br>
+						of the <b> SHENDA&#174;</b>  machine by
+						clicking <br>the <b>SHOW PARTS</b> buttons`
+					instru.style.opacity = '1'
+					instru.style.zIndex = '300'
+					instruModal.style.transform = 'translateX(0%)'
+				}
+			}, 2000)
 			// loadingBarElement.classList.add('ended')
 			// loadingBarElement.style.transform = ''
 		}, 2500)
@@ -108,12 +136,18 @@ const updateAllMaterials = () => {
  * Environment map
  */
 const environmentMap = cubeTextureLoader.load([
-	'/textures/environmentMaps/4/px.png',
-	'/textures/environmentMaps/4/nx.png',
-	'/textures/environmentMaps/4/py.png',
-	'/textures/environmentMaps/4/ny.png',
-	'/textures/environmentMaps/4/pz.png',
-	'/textures/environmentMaps/4/nz.png',
+	'/textures/environmentMaps/0/px.jpg',
+	'/textures/environmentMaps/0/nx.jpg',
+	'/textures/environmentMaps/0/py.jpg',
+	'/textures/environmentMaps/0/ny.jpg',
+	'/textures/environmentMaps/0/pz.jpg',
+	'/textures/environmentMaps/0/nz.jpg',
+	'/textures/environmentMaps/0/px.jpg',
+	'/textures/environmentMaps/0/nx.jpg',
+	'/textures/environmentMaps/0/py.jpg',
+	'/textures/environmentMaps/0/ny.jpg',
+	'/textures/environmentMaps/0/pz.jpg',
+	'/textures/environmentMaps/0/nz.jpg',
 ])
 
 environmentMap.encoding = THREE.sRGBEncoding
@@ -156,16 +190,20 @@ const point = document.querySelectorAll('.point')
 const labelPoint = document.querySelectorAll('.label')
 const btnShowText = document.querySelector('.btnSpText')
 const placeImgContainer = document.querySelector('.placeImgContainer')
+const warningText = document.querySelector('.warningText')
+const warning = document.querySelector('.warning')
+const instruText = document.querySelector('.instruText')
+const instruModal = document.querySelector('.instruModal')
+const instru = document.querySelector('.instru')
 let specsShown = false
+let btnShowPressed = false
+let numberMemory = 100
+let isMobile = false
+
 btnShow.addEventListener('click', () => {
 	showParts()
 	showSpecs()
 })
-let btnShowPressed = false
-let numberMemory = 100
-let isMobile = false
-const warningText = document.querySelector('.warningText')
-const warning = document.querySelector('.warning')
 window.mobileCheck = function () {
 	let check = false
 	let mobile = (function (a) {
@@ -177,7 +215,8 @@ window.mobileCheck = function () {
 				a.substr(0, 4)
 			)
 		)
-			isMobile = true
+			check = true
+		check = true
 	})(navigator.userAgent || navigator.vendor || window.opera)
 	console.log(check)
 }
@@ -193,6 +232,8 @@ window.addEventListener('DOMContentLoaded', function () {
 			warning.style.zIndex = '300'
 			placeImgContainer.style.opacity = 1
 			btnShow.style.opacity = 0
+			instru.style.opacity = 0
+			instruModal.style.transform = 'translateX(180%)'
 		}
 	}
 })
@@ -454,7 +495,7 @@ const points = [
 /**
  * Lights
  */
-const directionalLight = new THREE.DirectionalLight('#ffffff', 3)
+const directionalLight = new THREE.DirectionalLight('#ffffff')
 directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 15
 directionalLight.shadow.mapSize.set(1024, 1024)
@@ -485,6 +526,7 @@ window.addEventListener('resize', () => {
 			warning.style.zIndex = '300'
 			placeImgContainer.style.opacity = 1
 			btnShow.style.opacity = 0
+			instruModal.style.transform = 'translateX(180%)'
 		}
 	} else {
 		if (window.matchMedia('(orientation: landscape)').matches) {
@@ -493,6 +535,13 @@ window.addEventListener('resize', () => {
 			placeImgContainer.style.opacity = 0
 			btnShow.style.opacity = 1
 			window.scrollTo(0, document.body.scrollHeight)
+			instruText.innerHTML = `You can know more about the parts<br>
+			of the <b> SHENDA&#174;</b>  machine by
+			clicking <br>the <b>SHOW PARTS</b> buttons`
+			console.log('checkers')
+			instru.style.opacity = '1'
+			instru.style.zIndex = '300'
+			instruModal.style.transform = 'translateX(0%)'
 		}
 	}
 	if (sizes.width > sizes.height) {
