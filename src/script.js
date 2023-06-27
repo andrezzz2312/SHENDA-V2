@@ -36,24 +36,30 @@ const loadingManager = new THREE.LoadingManager(
 						placeImgContainer.style.opacity = 1
 						btnShow.style.opacity = 0
 						instru.style.opacity = 0
-						instruModal.style.transform = 'translateX(180%)'
+						instruModal.style.transform = 'translateX(-180%)'
 					} else {
-						instruText.innerHTML = `You can know more about the parts<br>
-						of the <b> SHENDA&#174;</b>  machine by
-						clicking <br>the <b>SHOW PARTS</b> buttons`
+						instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
+						<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
+						
+						Para saber mas sobre las partes<br>
+						de la maquina <b> SHENDA&#174;</b>,
+						presiona el <br> boton <b>MOSTRAR PARTES</b>`
 						instru.style.opacity = '1'
 						instru.style.zIndex = '300'
 						instruModal.style.transform = 'translateX(0%)'
 					}
 				} else {
-					instruText.innerHTML = `You can know more about the parts<br>
-						of the <b> SHENDA&#174;</b>  machine by
-						clicking <br>the <b>SHOW PARTS</b> buttons`
+					instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
+					<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
+					
+					Para saber mas sobre las partes<br>
+					de la maquina <b> SHENDA&#174;</b>,
+					presiona el <br> boton <b>MOSTRAR PARTES</b>`
 					instru.style.opacity = '1'
 					instru.style.zIndex = '300'
 					instruModal.style.transform = 'translateX(0%)'
 				}
-			}, 2000)
+			}, 500)
 			// loadingBarElement.classList.add('ended')
 			// loadingBarElement.style.transform = ''
 		}, 2500)
@@ -191,13 +197,31 @@ const instruModal = document.querySelector('.instruModal')
 const instru = document.querySelector('.instru')
 let specsShown = false
 let btnShowPressed = false
+let btnShowInstru = false
 let numberMemory = 100
 let isMobile = false
 
 btnShow.addEventListener('click', () => {
+	// hideInstru()
 	showParts()
 	showSpecs()
 })
+function hasFinished() {
+	console.log('“Finished”')
+}
+function hideInstru() {
+	if (btnShowInstru) {
+		instruText.innerHTML = `
+		Para conocer mas sobre las partes<br> de la maquina <b>SHENDA&#174;</b> <br>
+		puedes dar click en los puntos en pantalla.
+		<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
+		Para salirse del punto clickado se puede<br> volver  a dar click al mismo punto o darle <br> click   a otro punto para saber mas <br>informacion sobre este
+	`
+		instruModal.style.transform = 'translateX(0%)'
+	} else {
+		instruModal.style.transform = 'translateX(-180%)'
+	}
+}
 window.mobileCheck = function () {
 	let check = false
 	let mobile = (function (a) {
@@ -226,7 +250,7 @@ window.addEventListener('DOMContentLoaded', function () {
 			placeImgContainer.style.opacity = 1
 			btnShow.style.opacity = 0
 			instru.style.opacity = 0
-			instruModal.style.transform = 'translateX(180%)'
+			instruModal.style.transform = 'translateX(-180%)'
 		}
 	}
 })
@@ -235,6 +259,9 @@ point.forEach((e, i) => {
 	// movimiento de camara al dar click al punto
 
 	e.addEventListener('click', () => {
+		point.forEach((ele) => {
+			ele.children[0].style.pointerEvents = 'none'
+		})
 		if (point[i] === e) {
 			console.log(e.children)
 			text.forEach((e) => {
@@ -290,6 +317,10 @@ point.forEach((e, i) => {
 										}
 
 										numberMemory = i
+
+										point.forEach((ele) => {
+											ele.children[0].style.pointerEvents = 'all'
+										})
 									})
 									.start()
 							})
@@ -329,13 +360,15 @@ point.forEach((e, i) => {
 })
 
 function showParts() {
+	console.log(btnShowPressed)
 	if (btnShowPressed) {
 		shenda.animations.forEach((animation) => {
+			console.log('asd')
 			const action = mixer.existingAction(animation)
 			action.timeScale = -1
 			action.paused = false
 		})
-
+		console.log('if')
 		btnShow.disabled = true
 		btnShow.style.transition =
 			'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
@@ -343,16 +376,12 @@ function showParts() {
 		btnShow.style.opacity = 0.5
 		btnShow.style.pointerEvents = 'none'
 
-		mixer.addEventListener('finished', function (e) {
-			btnShowPressed = false
-			btnShow.disabled = false
-			btnShowText.textContent = 'SHOW PARTS'
-			btnShow.style.transition =
-				'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
-			btnShow.style.opacity = 1
-			btnShow.style.pointerEvents = 'all'
-		})
+		btnShowInstru = false
+		hideInstru()
+		mixer.addEventListener('finished', ifFinished)
 	} else {
+		console.log('else')
+		hideInstru()
 		mixer.stopAllAction()
 		shenda.animations.forEach((animation) => {
 			const action = mixer.clipAction(animation)
@@ -369,17 +398,32 @@ function showParts() {
 		btnShow.style.opacity = 0.5
 		btnShow.style.pointerEvents = 'none'
 
-		mixer.addEventListener('finished', function (e) {
-			btnShowPressed = true
-			btnShow.disabled = false
-			btnShowText.textContent = 'BACK'
-			btnShow.style.transition =
-				'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
-			btnShow.style.opacity = 1
-			btnShow.style.pointerEvents = 'all'
-		})
+		mixer.addEventListener('finished', elseFinished)
 	}
 }
+function ifFinished(e) {
+	btnShowPressed = false
+	btnShow.disabled = false
+	btnShowText.textContent = 'SHOW PARTS'
+	btnShow.style.transition =
+		'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
+	btnShow.style.opacity = 1
+	btnShow.style.pointerEvents = 'all'
+	mixer.removeEventListener('finished', ifFinished)
+}
+function elseFinished(e) {
+	btnShowPressed = true
+	btnShowInstru = true
+	hideInstru()
+	btnShow.disabled = false
+	btnShowText.textContent = 'BACK'
+	btnShow.style.transition =
+		'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
+	btnShow.style.opacity = 1
+	btnShow.style.pointerEvents = 'all'
+	mixer.removeEventListener('finished', elseFinished)
+}
+
 function showSpecs() {
 	if (specsShown === false) {
 		setTimeout(() => {
@@ -467,10 +511,10 @@ const points = [
 		position: new THREE.Vector3(0.8, 1.7, 0.7),
 		element: document.querySelector('.point-12'),
 	},
-	{
-		position: new THREE.Vector3(0, 0.5, 0.7),
-		element: document.querySelector('.point-13'),
-	},
+	// {
+	// 	position: new THREE.Vector3(0, 0.5, 0.7),
+	// 	element: document.querySelector('.point-13'),
+	// },
 	{
 		position: new THREE.Vector3(0, -0.1, 2.1),
 		element: document.querySelector('.point-14'),
@@ -505,7 +549,6 @@ const sizes = {
 	width: window.innerWidth,
 	height: window.innerHeight,
 }
-console.log(sizes)
 
 window.addEventListener('resize', () => {
 	console.log(sizes)
@@ -519,7 +562,7 @@ window.addEventListener('resize', () => {
 			warning.style.zIndex = '300'
 			placeImgContainer.style.opacity = 1
 			btnShow.style.opacity = 0
-			instruModal.style.transform = 'translateX(180%)'
+			instruModal.style.transform = 'translateX(-180%)'
 		}
 	} else {
 		if (window.matchMedia('(orientation: landscape)').matches) {
@@ -528,9 +571,12 @@ window.addEventListener('resize', () => {
 			placeImgContainer.style.opacity = 0
 			btnShow.style.opacity = 1
 			window.scrollTo(0, document.body.scrollHeight)
-			instruText.innerHTML = `You can know more about the parts<br>
-			of the <b> SHENDA&#174;</b>  machine by
-			clicking <br>the <b>SHOW PARTS</b> buttons`
+			instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
+			<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
+			
+			Para saber mas sobre las partes<br>
+			de la maquina <b> SHENDA&#174;</b>,
+			presiona el <br> boton <b>MOSTRAR PARTES</b>`
 			console.log('checkers')
 			instru.style.opacity = '1'
 			instru.style.zIndex = '300'
@@ -585,7 +631,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.physicallyCorrectLights = true
 renderer.outputEncoding = THREE.sRGBEncoding
 renderer.toneMapping = THREE.ReinhardToneMapping
-renderer.toneMappingExposure = 3
+renderer.toneMappingExposure = 1
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
