@@ -162,7 +162,7 @@ debugObject.envMapIntensity = 2.5
  */
 let shenda
 let mixer
-gltfLoader.load('/models/DamagedHelmet/glTF/SHENDA1.glb', (gltf) => {
+gltfLoader.load('/models/DamagedHelmet/glTF/SHENDA2.glb', (gltf) => {
 	shenda = gltf
 	gltf.scene.scale.set(0.5, 0.5, 0.5)
 	gltf.scene.rotation.y = Math.PI * 0.5
