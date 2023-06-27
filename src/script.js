@@ -321,6 +321,10 @@ point.forEach((e, i) => {
 										point.forEach((ele) => {
 											ele.children[0].style.pointerEvents = 'all'
 										})
+
+										// point.forEach((ele) => {
+										// 	ele.children[0].style.pointerEvents = 'all'
+										// })
 									})
 									.start()
 							})
@@ -332,6 +336,10 @@ point.forEach((e, i) => {
 					.to(new THREE.Vector3(0, 0, 0), 1000)
 					.easing(TWEEN.Easing.Quadratic.InOut)
 					.onComplete(() => {
+						point.forEach((ele) => {
+							ele.children[0].style.pointerEvents = 'all'
+						})
+						numberMemory = 100
 						new TWEEN.Tween(camera.position)
 							.to(
 								{
@@ -402,6 +410,8 @@ function showParts() {
 	}
 }
 function ifFinished(e) {
+	console.log('iffinished')
+
 	btnShowPressed = false
 	btnShow.disabled = false
 	btnShowText.textContent = 'SHOW PARTS'
@@ -412,6 +422,7 @@ function ifFinished(e) {
 	mixer.removeEventListener('finished', ifFinished)
 }
 function elseFinished(e) {
+	console.log('elsefinished')
 	btnShowPressed = true
 	btnShowInstru = true
 	hideInstru()
