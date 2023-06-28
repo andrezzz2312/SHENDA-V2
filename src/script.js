@@ -147,12 +147,12 @@ const updateAllMaterials = () => {
  * Environment map
  */
 const environmentMap = cubeTextureLoader.load([
-	'/textures/environmentMaps/4/px.png',
-	'/textures/environmentMaps/4/nx.png',
-	'/textures/environmentMaps/4/py.png',
-	'/textures/environmentMaps/4/ny.png',
-	'/textures/environmentMaps/4/pz.png',
-	'/textures/environmentMaps/4/nz.png',
+	'./textures/environmentMaps/4/px.png',
+	'./textures/environmentMaps/4/nx.png',
+	'./textures/environmentMaps/4/py.png',
+	'./textures/environmentMaps/4/ny.png',
+	'./textures/environmentMaps/4/pz.png',
+	'./textures/environmentMaps/4/nz.png',
 ])
 // environmentMap.generateMipmaps = false
 environmentMap.colorSpace = THREE.SRGBColorSpace
@@ -185,7 +185,7 @@ window.mobileCheck = function () {
 
 mobileCheck()
 if (!isMobile) {
-	gltfLoader.load('/models/DamagedHelmet/glTF/SHENDA2.glb', (gltf) => {
+	gltfLoader.load('./models/DamagedHelmet/glTF/SHENDA2.glb', (gltf) => {
 		shenda = gltf
 		gltf.scene.scale.set(0.5, 0.5, 0.5)
 		gltf.scene.rotation.y = Math.PI * 0.5
@@ -198,7 +198,7 @@ if (!isMobile) {
 		updateAllMaterials()
 	})
 } else {
-	gltfLoader.load('/models/DamagedHelmet/glTF/SHENDA1.glb', (gltf) => {
+	gltfLoader.load('./models/DamagedHelmet/glTF/SHENDA1.glb', (gltf) => {
 		shenda = gltf
 		gltf.scene.scale.set(0.5, 0.5, 0.5)
 		gltf.scene.rotation.y = Math.PI * 0.5
