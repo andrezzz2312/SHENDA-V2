@@ -158,6 +158,9 @@ body {
 	color: #ffffff;
 	/* font-family: Helvetica, sans-serif; */
 	text-align: center;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 	line-height: 40px;
 	font-weight: 300;
 	font-size: 14px;
@@ -200,6 +203,9 @@ body {
 	padding: 20px;
 	border-radius: 4px;
 	text-align: center;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 	/* background: #00000077; */
 	background: rgb(167, 52, 57);
 	background: radial-gradient(
@@ -222,6 +228,9 @@ h3 {
 }
 p {
 	text-align: justify;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 }
 .point:hover .text {
 	/* opacity: 1; */
@@ -270,6 +279,9 @@ p {
 	border-radius: 2rem;
 	margin: 2rem;
 	text-align: center;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 }
 
 .warnIcon {
@@ -288,6 +300,8 @@ p {
 	opacity: 1;
 }
 .instruModal {
+	pointer-events: all;
+	cursor: pointer;
 	position: absolute;
 	left: 5%;
 	top: 5%;
@@ -300,6 +314,9 @@ p {
 	padding: 1rem;
 	border-radius: 2rem;
 	text-align: center;
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 	transform: translateX(-300%);
 	transition: all 1s ease-in-out;
@@ -311,6 +328,34 @@ p {
 .instruIcon {
 	font-size: 1.5rem;
 	color: #a73439;
+}
+.instruIconCont {
+	position: absolute;
+	left: 5%;
+	top: 5%;
+}
+
+.instruIconExt {
+	position: relative;
+	transition: all 1s ease-in-out;
+	cursor: pointer;
+	font-size: 3rem;
+	color: #a73439;
+	background-size: 0.5rem;
+	z-index: 1;
+	opacity: 0;
+}
+.instruIconExt::after {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 50%;
+	z-index: -1;
+	content: '';
+
+	width: 100%;
+	height: 100%;
+	background-color: white;
 }
 
 .btnInstru {

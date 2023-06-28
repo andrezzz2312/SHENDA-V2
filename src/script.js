@@ -37,16 +37,19 @@ const loadingManager = new THREE.LoadingManager(
 						btnShow.style.opacity = 0
 						instru.style.opacity = 0
 						instruModal.style.transform = 'translateX(-180%)'
+						instruIconExt.style.opacity = '1'
+						instruIconExt.style.transform = 'translateX(0%)'
 					} else {
 						instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
 						<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
-						
 						Para saber mas sobre las partes<br>
 						de la maquina <b> SHENDA&#174;</b>,
 						presiona el <br> boton <b>MOSTRAR PARTES</b>`
 						instru.style.opacity = '1'
 						instru.style.zIndex = '300'
 						instruModal.style.transform = 'translateX(0%)'
+						instruIconExt.style.opacity = '0'
+						instruIconExt.style.transform = 'translateX(500%)'
 					}
 				} else {
 					instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
@@ -58,6 +61,8 @@ const loadingManager = new THREE.LoadingManager(
 					instru.style.opacity = '1'
 					instru.style.zIndex = '300'
 					instruModal.style.transform = 'translateX(0%)'
+					instruIconExt.style.opacity = '0'
+					instruIconExt.style.transform = 'translateX(500%)'
 				}
 			}, 500)
 			// loadingBarElement.classList.add('ended')
@@ -149,8 +154,8 @@ const environmentMap = cubeTextureLoader.load([
 	'/textures/environmentMaps/4/pz.png',
 	'/textures/environmentMaps/4/nz.png',
 ])
-
-environmentMap.encoding = THREE.sRGBEncoding
+// environmentMap.generateMipmaps = false
+environmentMap.colorSpace = THREE.SRGBColorSpace
 
 scene.background = environmentMap
 scene.environment = environmentMap
@@ -226,12 +231,25 @@ const warningText = document.querySelector('.warningText')
 const warning = document.querySelector('.warning')
 const instruText = document.querySelector('.instruText')
 const instruModal = document.querySelector('.instruModal')
+const instruIconExt = document.querySelector('.instruIconExt')
 const instru = document.querySelector('.instru')
 let specsShown = false
 let btnShowPressed = false
 let btnShowInstru = false
-let numberMemory = 100
 
+// let instruShowing = false
+let numberMemory = 100
+instruModal.addEventListener('click', () => {
+	instruModal.style.transform = 'translateX(-180%)'
+	instruIconExt.style.opacity = '1'
+	instruIconExt.style.transform = 'translateX(0%)'
+})
+instruIconExt.addEventListener('click', (e) => {
+	instruModal.style.transform = 'translateX(0%)'
+
+	instruIconExt.style.opacity = '0'
+	instruIconExt.style.transform = 'translateX(500%)'
+})
 btnShow.addEventListener('click', () => {
 	// hideInstru()
 	showParts()
@@ -249,8 +267,12 @@ function hideInstru() {
 		Para salirse del punto clickado se puede<br> volver  a dar click al mismo punto o darle <br> click   a otro punto para saber mas <br>informacion sobre este
 	`
 		instruModal.style.transform = 'translateX(0%)'
+		instruIconExt.style.opacity = '0'
+		instruIconExt.style.transform = 'translateX(500%)'
 	} else {
 		instruModal.style.transform = 'translateX(-180%)'
+		instruIconExt.style.opacity = '1'
+		instruIconExt.style.transform = 'translateX(0%)'
 	}
 }
 
@@ -265,6 +287,8 @@ window.addEventListener('DOMContentLoaded', function () {
 			btnShow.style.opacity = 0
 			instru.style.opacity = 0
 			instruModal.style.transform = 'translateX(-180%)'
+			instruIconExt.style.opacity = '1'
+			instruIconExt.style.transform = 'translateX(0%)'
 		}
 	}
 })
@@ -428,11 +452,17 @@ function ifFinished(e) {
 
 	btnShowPressed = false
 	btnShow.disabled = false
-	btnShowText.textContent = 'SHOW PARTS'
+	btnShowText.textContent = 'MOSTRAR PARTES'
+
 	btnShow.style.transition =
 		'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
 	btnShow.style.opacity = 1
 	btnShow.style.pointerEvents = 'all'
+	instruText.innerHTML = ` Inspecciona la maquina <b>SHENDA&#174;</b> <br>arrastrando el click sobre ella, <br>y haciendo zoom con la rueda del ratón. <br>
+						<hr style="height:2px;border-width:0;color:gray;background-color:rgba(167, 52, 57, 1);margin-top:0.5rem;margin-bottom:0.5rem">
+						Para saber mas sobre las partes<br>
+						de la maquina <b> SHENDA&#174;</b>,
+						presiona el <br> boton <b>MOSTRAR PARTES</b>`
 	mixer.removeEventListener('finished', ifFinished)
 }
 function elseFinished(e) {
@@ -441,7 +471,7 @@ function elseFinished(e) {
 	btnShowInstru = true
 	hideInstru()
 	btnShow.disabled = false
-	btnShowText.textContent = 'BACK'
+	btnShowText.textContent = 'ATRAS'
 	btnShow.style.transition =
 		'box-shadow 400ms ease-in-out,opacity 0.5s ease-in-out'
 	btnShow.style.opacity = 1
@@ -485,15 +515,15 @@ function showSpecs() {
 const raycaster = new THREE.Raycaster()
 const points = [
 	{
-		position: new THREE.Vector3(2.4, -1, 0),
+		position: new THREE.Vector3(2.15, -0.85, -0.15),
 		element: document.querySelector('.point-0'),
 	},
 	{
-		position: new THREE.Vector3(2.4, -1, -0.4),
+		position: new THREE.Vector3(2.15, -0.85, -0.75),
 		element: document.querySelector('.point-1'),
 	},
 	{
-		position: new THREE.Vector3(2.2, -1.3, -0.9),
+		position: new THREE.Vector3(1.9, -1.4, -0.8),
 		element: document.querySelector('.point-2'),
 	},
 	{
@@ -505,15 +535,15 @@ const points = [
 		element: document.querySelector('.point-4'),
 	},
 	{
-		position: new THREE.Vector3(0, -0.1, -2.1),
+		position: new THREE.Vector3(0, -0.2, -2.1),
 		element: document.querySelector('.point-5'),
 	},
 	{
-		position: new THREE.Vector3(3.77, 1.7, 1.1),
+		position: new THREE.Vector3(4, 1.8, 1.1),
 		element: document.querySelector('.point-6'),
 	},
 	{
-		position: new THREE.Vector3(3.77, 1.7, -1),
+		position: new THREE.Vector3(3.6, 1.8, -1),
 		element: document.querySelector('.point-7'),
 	},
 	{
@@ -521,19 +551,19 @@ const points = [
 		element: document.querySelector('.point-8'),
 	},
 	{
-		position: new THREE.Vector3(-1.2, 1.7, -0.6),
+		position: new THREE.Vector3(-1.2, 1.5, -0.6),
 		element: document.querySelector('.point-9'),
 	},
 	{
-		position: new THREE.Vector3(-1.5, 2.1, 0.35),
+		position: new THREE.Vector3(-1.4, 1.5, 0.7),
 		element: document.querySelector('.point-10'),
 	},
 	{
-		position: new THREE.Vector3(0.8, 2.3, 0.7),
+		position: new THREE.Vector3(0.85, 2, 0.7),
 		element: document.querySelector('.point-11'),
 	},
 	{
-		position: new THREE.Vector3(0.8, 1.7, 0.7),
+		position: new THREE.Vector3(0.85, 1.3, 0.7),
 		element: document.querySelector('.point-12'),
 	},
 	// {
@@ -541,15 +571,15 @@ const points = [
 	// 	element: document.querySelector('.point-13'),
 	// },
 	{
-		position: new THREE.Vector3(0, -0.1, 2.1),
+		position: new THREE.Vector3(0, -0.2, 2.1),
 		element: document.querySelector('.point-14'),
 	},
 	{
-		position: new THREE.Vector3(1.9, 0.6, 2.15),
+		position: new THREE.Vector3(1.9, 0.6, 1.5),
 		element: document.querySelector('.point-15'),
 	},
 	{
-		position: new THREE.Vector3(-1.5, 1.4, -0.5),
+		position: new THREE.Vector3(-1.5, 1.2, -0.5),
 		element: document.querySelector('.point-16'),
 	},
 ]
@@ -557,7 +587,7 @@ const points = [
 /**
  * Lights
  */
-const directionalLight = new THREE.DirectionalLight('#ffffff')
+const directionalLight = new THREE.DirectionalLight('#ffffff', 2)
 directionalLight.castShadow = true
 directionalLight.shadow.camera.far = 15
 directionalLight.shadow.mapSize.set(1024, 1024)
@@ -588,6 +618,8 @@ window.addEventListener('resize', () => {
 			placeImgContainer.style.opacity = 1
 			btnShow.style.opacity = 0
 			instruModal.style.transform = 'translateX(-180%)'
+			instruIconExt.style.opacity = '1'
+			instruIconExt.style.transform = 'translateX(0%)'
 		}
 	} else {
 		if (window.matchMedia('(orientation: landscape)').matches) {
@@ -606,6 +638,8 @@ window.addEventListener('resize', () => {
 			instru.style.opacity = '1'
 			instru.style.zIndex = '300'
 			instruModal.style.transform = 'translateX(0%)'
+			instruIconExt.style.opacity = '0'
+			instruIconExt.style.transform = 'translateX(500%)'
 		}
 	}
 	if (sizes.width > sizes.height) {
@@ -654,9 +688,9 @@ const renderer = new THREE.WebGLRenderer({
 	antialias: true,
 })
 renderer.physicallyCorrectLights = true
-renderer.outputEncoding = THREE.sRGBEncoding
+renderer.colorSpace = THREE.SRGBColorSpace
 renderer.toneMapping = THREE.ReinhardToneMapping
-renderer.toneMappingExposure = 1
+renderer.toneMappingExposure = 2
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(sizes.width, sizes.height)
