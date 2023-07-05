@@ -155,10 +155,23 @@ const environmentMap = cubeTextureLoader.load([
 	'./textures/environmentMaps/4/nz.png',
 ])
 // environmentMap.generateMipmaps = false
-environmentMap.colorSpace = THREE.SRGBColorSpace
+// environmentMap.colorSpace = THREE.SRGBColorSpace
 
-scene.background = environmentMap
+// scene.background = environmentMap
 scene.environment = environmentMap
+const geometry = new THREE.SphereGeometry(100, 60, 40)
+// invert the geometry on the x-axis so that all of the faces point inward
+geometry.scale(-2.5, 1, 1)
+const texture = new THREE.TextureLoader(loadingManager).load(
+	'./textures/environmentMaps/1/three.jpg'
+)
+// environmentMap.generateMipmaps = false
+// texture.colorSpace = THREE.SRGBColorSpace
+const material = new THREE.MeshBasicMaterial({ map: texture })
+const mesh = new THREE.Mesh(geometry, material)
+// scene.background = texture
+// scene.environment = texture
+scene.add(mesh)
 
 debugObject.envMapIntensity = 2.5
 
@@ -593,6 +606,7 @@ directionalLight.shadow.camera.far = 15
 directionalLight.shadow.mapSize.set(1024, 1024)
 directionalLight.shadow.normalBias = 0.05
 directionalLight.position.set(0.25, 3, -2.25)
+
 scene.add(directionalLight)
 
 /**
@@ -666,9 +680,9 @@ const camera = new THREE.PerspectiveCamera(
 	75,
 	sizes.width / sizes.height,
 	0.1,
-	100
+	1100
 )
-camera.position.set(5, 1, -5)
+camera.position.set(5, 1, -2)
 scene.add(camera)
 
 // Controls
@@ -677,7 +691,7 @@ controls.enableDamping = true
 controls.enablePan = false
 controls.enableZoom = true
 controls.minDistance = 2
-controls.maxDistance = 7
+controls.maxDistance = 4
 
 /**
  * Renderer
@@ -687,7 +701,7 @@ const renderer = new THREE.WebGLRenderer({
 	canvas: canvas,
 	antialias: true,
 })
-renderer.physicallyCorrectLights = true
+// renderer.physicallyCorrectLights = true
 renderer.colorSpace = THREE.SRGBColorSpace
 renderer.toneMapping = THREE.ReinhardToneMapping
 renderer.toneMappingExposure = 2
