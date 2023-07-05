@@ -336,13 +336,13 @@ point.forEach((e, i) => {
 								{
 									x:
 										points[i].position.x < 0
-											? points[i].position.x - 4
-											: points[i].position.x + 4,
+											? points[i].position.x - 2
+											: points[i].position.x + 2,
 									y: points[i].position.y + 2,
 									z:
 										points[i].position.z < 0
-											? points[i].position.z - 4
-											: points[i].position.z + 4,
+											? points[i].position.z - 2
+											: points[i].position.z + 2,
 								},
 								1000
 							)
@@ -368,7 +368,15 @@ point.forEach((e, i) => {
 										}
 
 										numberMemory = i
+										var distance = camera.position.distanceTo(
+											new THREE.Vector3(
+												points[i].position.x,
+												points[i].position.y,
+												points[i].position.z
+											)
+										)
 
+										controls.maxDistance = distance
 										point.forEach((ele) => {
 											ele.children[0].style.pointerEvents = 'all'
 										})
@@ -385,6 +393,9 @@ point.forEach((e, i) => {
 			} else {
 				new TWEEN.Tween(controls.target)
 					.to(new THREE.Vector3(0, 0, 0), 1000)
+					.onStart(() => {
+						controls.maxDistance = 4
+					})
 					.easing(TWEEN.Easing.Quadratic.InOut)
 					.onComplete(() => {
 						point.forEach((ele) => {
@@ -394,9 +405,9 @@ point.forEach((e, i) => {
 						new TWEEN.Tween(camera.position)
 							.to(
 								{
-									x: 5,
-									y: 1,
-									z: -5,
+									x: -2.6,
+									y: 0.2,
+									z: -3,
 								},
 								1000
 							)
@@ -500,14 +511,17 @@ function showSpecs() {
 	} else {
 		new TWEEN.Tween(controls.target)
 			.to(new THREE.Vector3(0, 0, 0), 1000)
+			.onStart(() => {
+				controls.maxDistance = 4
+			})
 			.easing(TWEEN.Easing.Quadratic.InOut)
 			.onComplete(() => {
 				new TWEEN.Tween(camera.position)
 					.to(
 						{
-							x: 5,
-							y: 1,
-							z: -5,
+							x: -2.6,
+							y: 0.2,
+							z: -3,
 						},
 						1000
 					)
@@ -682,7 +696,7 @@ const camera = new THREE.PerspectiveCamera(
 	0.1,
 	1100
 )
-camera.position.set(5, 1, -2)
+camera.position.set(-2.6, 0.2, -3)
 scene.add(camera)
 
 // Controls
