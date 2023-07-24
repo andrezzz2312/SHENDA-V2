@@ -192,7 +192,7 @@ window.mobileCheck = function () {
 			)
 		)
 			isMobile = true
-	})(navigator.userAgent || navigator.vendor || window.opera)
+	})(navigator.userAgent || window.opera)
 	console.log(isMobile)
 }
 
