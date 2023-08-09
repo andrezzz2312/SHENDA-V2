@@ -175,11 +175,19 @@ body {
 	aspect-ratio: 1/1;
 	background: hsl(252, 3%, 61%);
 	border-radius: 50%;
-	width: 40%;
-	transform: translate(17%, 17%);
+	width: 43%;
+	transform-origin: center;
+	transform: translate(20%, 18%);
+
 	border: 5px solid var(--burgundy-color);
 	-webkit-transition: all 0.5s ease-in-out;
 	transition: all 0.5s ease-in-out;
+}
+@media only screen and (max-width: 48em) {
+	.inner {
+		transform: translate(23%, 23%);
+		border: 4.5px solid var(--burgundy-color);
+	}
 }
 .inner:hover {
 	border: 5px solid #fff;
